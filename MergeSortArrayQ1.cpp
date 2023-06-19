@@ -16,9 +16,9 @@ void mergeSortedArrays(vector<int>&a, int m , vector<int>&b, int n){
         }
 }
 int main(){
-    // Test Case 1
-    std::vector<int> a = {1, 2, 3, 0, 0, 0};
-    std::vector<int> b = {2, 5, 6};
+    
+    vector<int> a = {1, 2, 3, 0, 0, 0};
+    vector<int> b = {2, 5, 6};
     int m = 3;
     int n = 3;
     
