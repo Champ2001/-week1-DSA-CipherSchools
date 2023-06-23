@@ -14,10 +14,7 @@ int trap(vector<int>& heights) {
         rmax[n-i-1] = max(heights[n-i-1], rmax[n-i]);
     }
 
-    // for(int i = n-2;i >= 0; i--){
-    //     rmax[i] = max(heights[i] , rmax[i+1]);
-    // }
-
+    
     int maxWater = 0;
     for(int i = 1;i<n;i++){
         maxWater += min(lmax[i], rmax[i]) - heights[i];
