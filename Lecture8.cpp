@@ -90,7 +90,7 @@ void markRow(int i ,vector<vector<int>>& matrix){
         vector<int>rows(n, -1);
         vector<int>cols(m, -1);
 
-        for(int i =0;i<n;i++){
+        for(int i = 0;i<n;i++){
             for(int j = 0;j<m;j++){
                 if(matrix[i][j] == 0){
                     rows[i]=1;
