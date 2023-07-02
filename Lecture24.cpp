@@ -11,71 +11,69 @@ struct TreeNode {
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-//!Root to leaf max sum
-bool isLeaf(TreeNode* root){
-        if(root && !root->left && !root->right){
-            return true;
-        }
-        return false;
-    }
-    void maxPathSum(TreeNode* root, int sum , int &maxsum){
-        if(!root){
-            return;
-        }
-        sum += root->val;
-        if(isLeaf(root)){
-            maxsum = max(maxsum , sum);
-            return;
-        }
-        else{
-            maxPathSum(root->left, sum , maxsum);
-            maxPathSum(root->right, sum , maxsum);
-        }
-    }
 
-    int sumNumbers(TreeNode* root) {
-        int maxsum = 0;
-        maxPathSum(root, 0, maxsum);
-        return maxsum;
-    }
-
-//! Binary Tree Maximum Path Sum
-
-
-int maximumPathDown(TreeNode* root, int maxi){
+//! Level Order Traversal
+vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>>ans;
+        queue<TreeNode*>q;
         if(root == NULL){
-            return 0;
+            return ans;
         }
-        int left = max(0,maximumPathDown(root->left, maxi));
-        int right = max(0, maximumPathDown(root->right, maxi));
-        maxi = max(maxi, (root->val+left+right));
-        return max(left,right)+root->val;
-    }
-    int maxPathSum(TreeNode* root) {
-        int maxi = INT_MIN;
-        maximumPathDown(root, maxi);
-        return maxi;
+        q.push(root);
+        while(!q.empty()){
+            int size = q.size();
+            vector<int>level;
+            for(int i = 0;i< size;i++){
+                TreeNode* node = q.front();
+                q.pop();
+                if(node->left){
+                    q.push(node->left);
+                }
+                if(node->right){
+                    q.push(node->right);
+                }
+                level.push_back(node->val);
+            }
+            ans.push_back(level);
+        }
+        return ans;
     }
 
-//! Construct binary tree from preorder and inorder
- TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        map<int,int> mp;
+
+//! Vertical Order Traversal
+vector<vector<int>> verticalTraversal(TreeNode* root) {
+    // Storing node's value and levels in a queue
+    queue<pair<TreeNode*, pair<int, int>>> todo;
+    // Storing nodes with levels in a multimap
+    map<int, map<int, multiset<int>>> nodes;
+    todo.push(make_pair(root, make_pair(0, 0)));
+    
+    while (!todo.empty()) {
+        auto p = todo.front();
+        todo.pop();
+        TreeNode* node = p.first;
+        int x = p.second.first;
+        int y = p.second.second;
+        nodes[x][y].insert(node->val);
         
-        for(int i=0;i<inorder.size();i++){
-            mp[inorder[i]]=i;
+        if (node->left) {
+            todo.push(make_pair(node->left, make_pair(x - 1, y + 1)));
         }
-        TreeNode *root = buildTree(preorder,0,preorder.size()-1,inorder,0,inorder.size()-1,mp);
-        return root;
+        if (node->right) {
+            todo.push(make_pair(node->right, make_pair(x + 1, y + 1)));
+        }
     }
     
-    TreeNode* buildTree(vector<int>& preorder,int preStart,int preEnd,vector<int>& inorder,int inStart,int inEnd, map<int,int> &mp){
-        if(preStart>preEnd || inStart>inEnd) return NULL;
-        TreeNode *root = new TreeNode(preorder[preStart]);
-        
-        int inRoot = mp[root->val];
-        int numsleft = inRoot - inStart;
-        
-        root->left =buildTree(preorder,preStart+1,preStart+numsleft,inorder,inStart,inRoot-1,mp);
-        root->right =buildTree(preorder,preStart+numsleft+1,preEnd,inorder,inRoot+1,inEnd,mp);
-        return root;
+    vector<vector<int>> ans;
+    for (auto& p : nodes) {
+        vector<int> cols;
+        for (auto& q : p.second) {
+            cols.insert(cols.end(), q.second.begin(), q.second.end());
+        }
+        ans.push_back(cols);
     }
+    
+    return ans;
+}
+
+
