@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int search(vector<int>& arr, int n, int target)
+int rotatedInPivot(vector<int>& arr, int n, int target)
 {
     int low = 0;
     int high = n - 1;

@@ -89,7 +89,7 @@ bool isSafe1(int row, int col, vector < string > board, int n) {
       return ans;
     }
 
-//! N -Queen efficient
+//! N - Queen efficient
 void solve(int col , vector<int>&leftRow, vector<int>&upperDiagonal , vector<int>&lowerDiagonal, int n, vector<vector<string>>&ans, vector<string>&board){
         if(col == n){
             ans.push_back(board);
